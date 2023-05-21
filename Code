@@ -1,0 +1,27 @@
+import numpy as np 
+
+def Close_Hashing(input_keys, hash_table_size):
+    N=len(input_keys)
+    M=hash_table_size
+    hash_table = np.arange(M, dtype=int)
+    hash_table= np.full_like(hash_table,-1)
+    for i in range(N):
+        key=(input_keys[i])%19
+        if hash_table[key]==-1:
+            hash_table[key]=input_keys[i]
+        elif hash_table[key]!=-1:
+            key=key+1
+            while True:
+                if hash_table[key]==-1:
+                    hash_table[key]=input_keys[i]
+                    break
+                elif key==(M-1):
+                    key=0
+                else:
+                     key=key+1             
+    return hash_table
+
+input_keys=[175, 23, 71, 49, 113, 123, 61, 160, 160, 157]
+hash_table_size=19
+Hash_table = Close_Hashing(input_keys, hash_table_size)
+print(Hash_table)
