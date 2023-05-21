@@ -1,0 +1,53 @@
+import numpy as np
+import random
+
+def Close_Hashing(input_keys, hash_table_size):
+    N = len(input_keys)
+    M = hash_table_size
+    hash_table = np.arange(M, dtype=int)
+    hash_table = np.full_like(hash_table, -1)
+    for i in range(N):
+        key = input_keys[i] % M
+        if hash_table[key] == -1:
+            hash_table[key] = input_keys[i]
+        elif hash_table[key] != -1:
+            key = (key + 1) % M
+            while True:
+                if hash_table[key] == -1:
+                    hash_table[key] = input_keys[i]
+                    break
+                elif key == (M - 1):
+                    key = 0
+                else:
+                    key = (key + 1) % M
+    return hash_table
+
+N = 10
+M = 2*N
+input_keys = [random.randint(0, 200) for _ in range(N)]
+Hash_table = Close_Hashing(input_keys, M)
+
+search_key = random.randint(0, 200)
+key = search_key % M
+comparisons = 1
+while key != M and Hash_table[key] != search_key:
+    key = key + 1
+    comparisons += 1
+    
+print("Search key: ",search_key)
+print("Number of comparisons: ",comparisons)
+print("\nfor 10 times:")
+search_keys = [random.randint(0, 200) for _ in range(10)]
+num_comparisons = []
+for key in search_keys:
+    index = key % M
+    comparisons = 1
+    while index != M and Hash_table[index] != key:
+        index = index + 1
+        comparisons += 1
+    num_comparisons.append(comparisons)
+
+print("Key\t\tNumber of Comparisons")
+for i, key in enumerate(search_keys):
+    print(key,"\t\t",num_comparisons[i])
+print("\ncomparisons Average:" ,sum(num_comparisons)/len(num_comparisons))
